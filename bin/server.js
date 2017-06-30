@@ -31,6 +31,7 @@ if (!debug) {
 }else{
     _conf = conf.development;
 }
+
 let app = new ServiceApplication(_conf);
 app.start()
     .then(()=>{

@@ -78,7 +78,7 @@ class ServiceApplication {
                             self.security.use(self.models);
                             self.setIo();
                             /* Starts the app */
-                            let port = process.env.PORT || self.config.port || 8080;
+                            let port = process.env.PORT || self.config.port || 8081;
                             self.server.listen(port, () => {
                                 console.log(`Server ready and listening in ws://${self.hostname}:${port}, 
                                                 Admin Panel is in http://${self.hostname}:${port}/`);
