@@ -15,10 +15,23 @@ app.listen(8080, function () {
 });
 */
 
-const conf                    = require(`${__dirname}/../config`).development,
+const conf                    = require(`${__dirname}/../config`),
     ServiceApplication      = require(`${__dirname}/../service`);
 
-let app = new ServiceApplication(conf);
+
+let debug = false;
+process.argv.forEach(function (val, index, array) {
+    if (val.indexOf('--debug') > -1){
+        debug = true;
+    }
+});
+let _conf = null;
+if (!debug) {
+    _conf = conf.production;
+}else{
+    _conf = conf.development;
+}
+let app = new ServiceApplication(_conf);
 app.start()
     .then(()=>{
         console.log("Done");
