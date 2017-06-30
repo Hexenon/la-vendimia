@@ -1,0 +1,130 @@
+<div class="container-fluid" ng-controller="salesCreateController">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default" style="visibility: visible;">
+                <div class="panel-heading">
+                    <h2>{{editing ? 'Edición' : 'Registro'}} de Venta</h2>
+                    <span style="margin: 0 5px;" class="pull-right"><button ng-click="startNewSale()" class="btn btn-sm btn-default"><i class="fa fa-file"></i>&nbsp;nuevo</button></span>
+                    <span style="margin: 0 5px;" class="pull-right"><button ng-click="printSale()" class="btn btn-sm btn-default"><i class="fa fa-print"></i>&nbsp;imprimir</button></span>
+                    <span class="pull-right"><span>Folio de Venta: <strong class="label label-primary">{{newSale.folio}}</strong></span></span>
+                    <div class="panel-ctrls" data-actions-container="" data-action-collapse='{"target": ".panel-body"}'></div>
+                </div>
+                <div class="panel-editbox" data-widget-controls=""></div>
+                <div class="panel-body">
+                    <form ng-submit="saveSale()" class="form-horizontal row-border">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Cliente</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" id="select-client" style="width:100% !important"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Artículo</label>
+                            <div class="col-sm-8" ng-disabled="!client">
+                                <input type="hidden" id="article-client" style="width:100% !important"/>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" ng-disabled="!article" ng-click="addArticle()" class="btn btn-sm"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="border-bottom: solid 1px rgb(213,213,213); margin-bottom: 5px;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="padding-right:50px">Código</th>
+                                        <th>Descripción</th>
+                                        <th>Modelo</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Importe</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="a in articles track by $index">
+                                        <td align="left">{{a.code}}</td>
+                                        <td>{{a.description}}</td>
+                                        <td>{{a.model}}</td>
+                                        <td>
+                                            <span class="pull-left label label-{{a.stock > 0 ? 'success' : 'danger'}}" style="position: absolute;top: {{51+ (($index+1)*53)}}px;">max:{{a.stock}}</span>
+                                            <input ng-model="a.quantity" class="form-control form-group-sm" type="number" min="1" step="1" max="{{a.stock}}" init-focus>
+
+                                        </td>
+                                        <td>{{a.maxPrice}}</td>
+                                        <td>{{a.maxPrice * a.quantity}}</td>
+                                        <td><button type="button" ng-click="deleteArticle(a)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button></td>
+                                    </tr>
+                                    </tbody>
+                                    <caption>Artículos de la venta</caption>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="margin-bottom: 15px;">
+                            <div class="pull-right">
+                                <span class="label label-midnightblue">enganche:</span>
+                                <span class="text-right text-">$&nbsp;<strong>{{newSale.hitch.toFixed(2)}}</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="margin-bottom: 15px;">
+                            <div class="pull-right">
+                                <span class="label label-midnightblue">bonificación enganche:</span>
+                                <span class="text-right">$&nbsp;<strong>{{newSale.hitchBonification.toFixed(2)}}</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="margin-bottom: 15px;">
+                            <div class="pull-right">
+                                <span class="label label-midnightblue">total:</span>
+                                <span class="text-right">$&nbsp;<strong>{{calculateTotal().toFixed(2)}}</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="margin-bottom: 15px;" ng-if="articles.length > 0">
+                            <h4>Abonos mensuales</h4>
+                            <div class="col-sm-12" ng-if="false">
+                                <div class="col-sm-10 icheck-square" ng-bind-html="getDeadlineText(0)">
+                                </div>
+                                <div class="col-sm-2 icheck-square">
+                                    <div class="radio blue icheck"><label><input type="radio"
+                                                                                 checked
+                                                                                 name="month-deadline"
+                                                                                 value="0">Contado</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" ng-repeat="m in deadlineMonths track by $index" on-finish-render="deadlineFinished">
+                                <div class="col-sm-10 icheck-square" ng-bind-html="getDeadlineText(m)">
+                                </div>
+                                <div class="col-sm-2 icheck-square">
+                                    <div class="radio blue icheck"><label><input type="radio"
+                                                                                 name="month-deadline"
+                                                                                 value="{{m}}">{{m}} meses</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button type="submit" ng-disabled="!canSave()" ng-show="!saving" class="btn-primary btn pull-right" style="margin: 0 5px;">Save</button>
+                            <button type="button" ng-show="saving" class="btn-primary btn pull-right"><i class="fa fa-spinner fa-spin"></i></button>
+                            <button type="button" ng-click="redirect('')" class="btn-default btn pull-right">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-12" ng-if="status">
+                            <div class="alert alert-danger">
+                                {{status}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12" ng-if="result">
+                            <div class="alert alert-info">
+                                {{result}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

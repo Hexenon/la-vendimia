@@ -1,0 +1,75 @@
+<div class="container-fluid" ng-controller="configurationCreateController">
+    <br><br>
+    <div class="row" ng-if="currentConfiguration">
+        <div class="col-xs-12">
+            <div class="alert alert-info">
+                <h3>Configuración Actual del {{getCreatedAt()}}<span class="pull-right"><small>{{currentConfiguration.createdAt.toLocaleString()}}</small></span></h3>
+                <h4>La configuración actual tiene una <strong>tasa de financiamiento del {{currentConfiguration.financingRate}}</strong> también tiene un <strong>{{currentConfiguration.hitch}}% de enganche</strong>
+                y permite un máximo de <strong>{{currentConfiguration.maxDeadline}} meses en compras a crédito</strong> </h4>
+
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="!currentConfiguration">
+        <div class="col-xs-12">
+            <div class="alert alert-danger">
+                <h3>No hay una configuración activa</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default" style="visibility: visible;" >
+                <div class="panel-heading">
+                    <h2>Configuración</h2>
+                    <div class="panel-ctrls" data-actions-container="" data-action-collapse='{"target": ".panel-body"}'></div>
+                </div>
+                <div class="panel-editbox" data-widget-controls=""></div>
+                <div class="panel-body">
+                    <form ng-submit="saveConfiguration()" class="form-horizontal row-border">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tasa de financiamiento</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1" step="0.1" class="form-control" placeholder="Tasa de financiamiento" ng-model="configuration.financingRate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">% de Enganche</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1" step="0.1" class="form-control" placeholder="% Enganche" ng-model="configuration.hitch">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Máximo plazo de pago</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" min="1" step="1" placeholder="Máximo plazo de pago" ng-model="configuration.maxDeadline">
+                            </div>
+                        </div><br><br>
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button type="submit" ng-disabled="!canSave()" ng-show="!saving" class="btn-primary btn pull-right" style="margin: 0 5px;">Guardar</button>
+                            <button type="button" ng-show="saving" class="btn-primary btn pull-right"><i class="fa fa-spinner fa-spin"></i></button>
+                            <button type="button" ng-click="redirect('')" class="btn-default btn pull-right">Cancelar</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <div class="col-xs-12" ng-if="status">
+                                <div class="alert alert-danger">
+                                    {{status}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12" ng-if="result">
+                                <div class="alert alert-info">
+                                    {{result}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

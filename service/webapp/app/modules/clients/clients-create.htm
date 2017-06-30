@@ -1,0 +1,64 @@
+<div class="container-fluid" ng-controller="clientsCreateController">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default" style="visibility: visible;">
+                <div class="panel-heading">
+                    <h2>{{editing ? 'Edición' : 'Registro'}} de clientes</h2>
+                    <span class="pull-right"><button ng-click="newClient = {};status = null; result = null;" class="btn btn-sm btn-default">Clear</button></span>
+                    <div class="panel-ctrls" data-actions-container="" data-action-collapse='{"target": ".panel-body"}'></div>
+                </div>
+                <div class="panel-editbox" data-widget-controls=""></div>
+                <div class="panel-body">
+                    <form ng-submit="saveClient()" class="form-horizontal row-border">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Nombre</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Nombre" ng-model="newClient.name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apellido Paterno</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Apellido Paterno" ng-model="newClient.lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Apellido Materno</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Apellido Materno" ng-model="newClient.maternalSurname">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">RFC</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" required
+                                       placeholder="RFC" ng-model="newClient.rfc" ng-pattern="/^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/i">
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button type="submit" ng-disabled="!canSave()" ng-show="!saving" class="btn-primary btn pull-right" style="margin: 0 5px;">Guardar</button>
+                            <button type="button" ng-show="saving" class="btn-primary btn pull-right"><i class="fa fa-spinner fa-spin"></i></button>
+                            <button type="button" ng-click="redirect('')" class="btn-default btn pull-right">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+
+                        <div class="col-xs-12" ng-if="status">
+                            <div class="alert alert-danger">
+                                {{status}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12" ng-if="result">
+                            <div class="alert alert-info">
+                                {{result}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

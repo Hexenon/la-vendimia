@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="vendimia" ng-controller="mainController" >
+<head>
+    <meta charset="utf-8">
+    <title>La Vendimia</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="description" content="La Vendimia Sales Software">
+    <link rel="shortcut icon" href="/assets/img/icon.png" type="image/png">
+
+    <link type='text/css' href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600'
+          rel='stylesheet'>
+
+    <link type="text/css" href="assets/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link type="text/css" href="assets/fonts/themify-icons/themify-icons.css" rel="stylesheet">
+    <!-- Themify Icons -->
+    <link type="text/css" href="assets/css/styles.css" rel="stylesheet">
+    <!-- Core CSS with all styles -->
+
+    <link type="text/css" href="assets/plugins/codeprettifier/prettify.css" rel="stylesheet">
+    <!-- Code Prettifier -->
+    <link type="text/css" href="assets/plugins/iCheck/skins/minimal/blue.css" rel="stylesheet">
+    <!-- iCheck -->
+
+
+    <!--[if lt IE 10]>
+    <script type="text/javascript" src="assets/js/media.match.min.js"></script>
+    <script type="text/javascript" src="assets/js/respond.min.js"></script>
+    <script type="text/javascript" src="assets/js/placeholder.min.js"></script>
+    <![endif]-->
+    <!-- The following CSS are included as plugins and can be removed if unused-->
+
+    <link type="text/css" href="assets/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link type="text/css" href="assets/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
+    <!-- jVectorMap -->
+    <link type="text/css" href="assets/plugins/switchery/switchery.css" rel="stylesheet">
+    <!-- Switchery -->
+
+    <link type="text/css" href="assets/plugins/pines-notify/pnotify.css" rel="stylesheet">
+
+
+    <link type="text/css" href="assets/plugins/iCheck/skins/minimal/_all.css" rel="stylesheet">
+    <!-- Custom Checkboxes / iCheck -->
+    <link type="text/css" href="assets/plugins/iCheck/skins/flat/_all.css" rel="stylesheet">
+    <link type="text/css" href="assets/plugins/iCheck/skins/square/_all.css" rel="stylesheet">
+
+    <link type="text/css" href="assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
+    <link type="text/css" href="assets/plugins/datatables/dataTables.themify.css" rel="stylesheet">
+
+    <link type="text/css" href="assets/plugins/form-select2/select2.css" rel="stylesheet"><!-- Select2 -->
+    <link type="text/css" href="assets/plugins/form-multiselect/css/multi-select.css" rel="stylesheet">
+</head>
+
+<body class="animated-content" ng-controller="usersController">
+
+<header id="topnav" class="navbar navbar-midnightblue navbar-fixed-top" role="banner" ng-show="$shared.user">
+
+    <div class="logo-area">
+		<span id="trigger-sidebar" class="toolbar-trigger toolbar-icon-bg">
+			<a data-toggle="tooltips" data-placement="right" title="Toggle Sidebar">
+				<span class="icon-bg">
+					<i class="ti ti-menu"></i>
+				</span>
+			</a>
+		</span>
+
+        <a class="navbar-brand" href="index.html"
+           style="background: url(assets/img/vendimia.png) no-repeat left 0 center;background-repeat:no-repeat;background-size:contain;background-position:center;">La Vendimia</a>
+
+
+    </div><!-- logo-area -->
+
+    <ng-include src="'app/partials/navbar.html'" ></ng-include>
+
+
+</header>
+
+<div id="wrapper" >
+    <div id="layout-static">
+        <div class="static-sidebar-wrapper sidebar-midnightblue" ng-show="$shared.user">
+            <div class="static-sidebar">
+                <div class="sidebar">
+                    <div class="widget stay-on-collapse" id="widget-sidebar">
+                        <nav role="navigation" class="widget-body">
+                            <ul class="acc-menu">
+                                <li class="nav-separator"><span>Console</span></li>
+                                <li><a href="index.html"><i class="ti ti-layers"></i><span>Inicio</span></a></li>
+                                <li><a href="javascript:;"><i class="fa fa-line-chart"></i><span>Ventas</span></a>
+                                    <ul class="acc-menu">
+                                        <li><a href ng-click="redirect('sales/create')" >Registrar Venta</a></li>
+                                        <li><a href ng-click="redirect('sales')" >Sales</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:;"><i class="fa fa-th-large"></i><span>Artículos</span></a>
+                                    <ul class="acc-menu">
+                                        <li><a href ng-click="redirect('articles/create')" >Artículo Nuevo</a></li>
+                                        <li><a href ng-click="redirect('articles')" >Lista de Artículos</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:;"><i class="fa fa-users"></i><span>Clientes</span></a>
+                                    <ul class="acc-menu">
+                                        <li><a href ng-click="redirect('clients/create')" >Cliente Nuevo</a></li>
+                                        <li><a href ng-click="redirect('clients')" >Lista de Clientes</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:;"><i class="ti ti-user"></i><span>Usuarios</span></a>
+                                    <ul class="acc-menu">
+                                        <li><a href ng-click="redirect('users/create')" >Usuario Nuevo</a></li>
+                                        <li><a href ng-click="redirect('users')" >Lista de Usuarios</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href ng-click="redirect('configuration')"><i class="fa fa-cogs"></i><span>Configuración</span></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="static-content-wrapper">
+            <div class="static-content">
+                <div class="page-content">
+                    <div class="animate-fadeIn" ng-view=""></div>
+                </div> <!-- #page-content -->
+            </div>
+            <ng-include src="'app/partials/footer.html'"></ng-include>
+
+        </div>
+    </div>
+</div>
+
+<!-- Load site level scripts -->
+
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script> -->
+
+<script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
+<!-- Load jQuery -->
+<script type="text/javascript" src="assets/js/jqueryui-1.10.3.min.js"></script>
+<!-- Load jQueryUI -->
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<!-- Load Bootstrap -->
+<script type="text/javascript" src="assets/js/enquire.min.js"></script>
+<!-- Load Enquire -->
+
+<script type="text/javascript" src="assets/plugins/velocityjs/velocity.min.js"></script>
+<!-- Load Velocity for Animated Content -->
+<script type="text/javascript" src="assets/plugins/velocityjs/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="assets/plugins/wijets/wijets.js"></script>
+<!-- Wijet -->
+
+<script type="text/javascript" src="assets/plugins/codeprettifier/prettify.js"></script>
+<!-- Code Prettifier  -->
+<script type="text/javascript" src="assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+<!-- Swith/Toggle Button -->
+
+<script type="text/javascript" src="assets/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+<!-- Bootstrap Tabdrop -->
+
+<script type="text/javascript" src="assets/plugins/iCheck/icheck.min.js"></script>
+<!-- iCheck -->
+
+<script type="text/javascript" src="assets/plugins/nanoScroller/js/jquery.nanoscroller.min.js"></script>
+<!-- nano scroller -->
+
+
+<script type="text/javascript" src="assets/plugins/datatables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="assets/plugins/datatables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="assets/plugins/bootbox/bootbox.js"></script>
+<script type="text/javascript" src="assets/plugins/pines-notify/pnotify.min.js"></script>
+<script type="text/javascript" src="assets/plugins/form-select2/select2.min.js"></script>
+<script type="text/javascript" src="assets/plugins/form-autosize/jquery.autosize-min.js"></script>
+
+<script type="text/javascript" src="assets/js/application.js"></script>
+
+<!-- End loading site level scripts -->
+<script type="text/javascript" src="assets/plugins/form-select2/select2.min.js"></script>
+<script type="text/javascript" src="assets/plugins/pines-notify/pnotify.min.js"></script> 		<!-- PNotify -->
+<script type="text/javascript" src="app/libs/angular/angular.js"></script>
+<script type="text/javascript" src="app/libs/angular/angular-route.js"></script>
+<script type="text/javascript" src="app/libs/angular/angular-animate.js"></script>
+<script type="text/javascript" src="app/libs/angular/angular-cookies.js"></script>
+
+<!-- socket.io sdk -->
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<!-- main module scripts -->
+<script type="text/javascript" src="app/modules/vendimia/vendimia.module.js"></script>
+<script type="text/javascript" src="app/modules/vendimia/vendimia.router.js"></script>
+<script type="text/javascript" src="app/modules/vendimia/vendimia.controller.js"></script>
+<!-- dashboard -->
+<script type="text/javascript" src="app/modules/dashboard/dashboard.controller.js"></script>
+
+<!-- realtime module scripts -->
+<script type="text/javascript" src="app/modules/realtime/realtime.module.js"></script>
+<script type="text/javascript" src="app/modules/realtime/realtime.service.js"></script>
+
+<!-- data module scripts -->
+<script type="text/javascript" src="app/modules/data/data.module.js"></script>
+<script type="text/javascript" src="app/modules/data/data.service.js"></script>
+
+<!-- common module scripts -->
+<script type="text/javascript" src="app/modules/common/common.module.js"></script>
+<script type="text/javascript" src="app/modules/common/common.service.js"></script>
+
+<!-- users module scripts -->
+<script type="text/javascript" src="app/modules/users/users.module.js"></script>
+<script type="text/javascript" src="app/modules/users/users.router.js"></script>
+<script type="text/javascript" src="app/modules/users/users.controller.js"></script>
+<script type="text/javascript" src="app/modules/users/login.controller.js"></script>
+<script type="text/javascript" src="app/modules/users/usersList.controller.js"></script>
+<script type="text/javascript" src="app/modules/users/usersCreate.controller.js"></script>
+
+
+<!-- clients module scripts -->
+<script type="text/javascript" src="app/modules/clients/clients.module.js"></script>
+<script type="text/javascript" src="app/modules/clients/clients.router.js"></script>
+<script type="text/javascript" src="app/modules/clients/clientsList.controller.js"></script>
+<script type="text/javascript" src="app/modules/clients/clientsCreate.controller.js"></script>
+
+<!-- articles module scripts -->
+<script type="text/javascript" src="app/modules/articles/articles.module.js"></script>
+<script type="text/javascript" src="app/modules/articles/articles.router.js"></script>
+<script type="text/javascript" src="app/modules/articles/articlesList.controller.js"></script>
+<script type="text/javascript" src="app/modules/articles/articlesCreate.controller.js"></script>
+
+<!-- configuration module scripts -->
+<script type="text/javascript" src="app/modules/configuration/configuration.module.js"></script>
+<script type="text/javascript" src="app/modules/configuration/configuration.router.js"></script>
+<script type="text/javascript" src="app/modules/configuration/configuration.controller.js"></script>
+
+<!-- sales module scripts -->
+<script type="text/javascript" src="app/modules/sales/sales.module.js"></script>
+<script type="text/javascript" src="app/modules/sales/sales.router.js"></script>
+<script type="text/javascript" src="app/modules/sales/salesCreate.controller.js"></script>
+<script type="text/javascript" src="app/modules/sales/salesList.controller.js"></script>
+
+</body>
+</html>
