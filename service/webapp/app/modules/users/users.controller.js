@@ -17,7 +17,8 @@
         $common.$shared.status = $dataService.status;
         $dataService.on('disconnect',()=>{
             $common.$shared.status = $dataService.status;
-            $scope.$apply();
+            try{ $scope.$apply()
+            }catch(err){}
         });
 
         $dataService.on('welcome',()=>{
