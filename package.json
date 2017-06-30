@@ -1,0 +1,40 @@
+{
+  "name": "peoplemovers-realtime",
+  "version": "0.0.1",
+  "engines": {
+    "node": "~6.10.3"
+  },
+  "description": "PeopleMovers realtime module.",
+  "author": "Orpinel-Ben <enriquebenavidesm@gmail.com>",
+  "contributors": [
+    {
+      "name": "Ben <enriquebenavidesm@gmail.com>"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeopleMovers/PushNotifications.git"
+  },
+  "homepage": "https://github.com/PeopleMovers/PushNotifications/wiki",
+  "bugs": {
+    "url": "https://github.com/PeopleMovers/PushNotifications/issues",
+    "email": "jorge@orpinel.com"
+  },
+  "dependencies": {
+    "async": "^2.4.1",
+    "aws-sdk": "^2.64.0",
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "compression": "^1.6.2",
+    "dynamoose": "^0.7.0",
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.10.2",
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.4",
+    "socket.io": "^2.0.2"
+  },
+  "scripts": {
+    "start": "node bin/server.js"
+  }
+}
