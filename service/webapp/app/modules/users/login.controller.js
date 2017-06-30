@@ -11,8 +11,6 @@
             }
 
             $scope.user = {
-                username: 'ben@lavendimia.io',
-                password: 'admin'
             };
 
             $scope.login = ()=>{
