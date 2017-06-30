@@ -6,11 +6,29 @@
         .controller("mainController",['$scope', '$common', ($scope, $common)=>{
             $scope.$shared = $common.$shared;
 
-            $scope.redirect = (location, _blank)=>{
-                if (!_blank) {
-                    $common.$location.path(location).search('userId',null).search('clientId',null).search('articleId', null);
-                } else {
+            $scope.redirect = (location, _blank, _ask)=>{
+                if (!_blank && !_ask) {
+                    $common.$location.path(location).search('userId',null).search('clientId',null).search('articleId', null).search('salieId', null);
+                } else if(!_ask){
                     $common.$window.open($common.$location.$$absUrl.replace($common.$location.$$path, location), '_blank');
+                } else{
+                    bootbox.dialog({
+                        message: "<h3 class='text-info text-center'>Usted está saliendo de la pantalla actual, todos los cambios se perderán</h3><h2 class='text-primary text-center'>¿Está seguro?</h2>",
+                        buttons: {
+                            success: {
+                                label: "Cancelar",
+                                className: "btn-default"
+                            },
+                            danger: {
+                                label: "Si, Salir",
+                                className: "btn-primary",
+                                callback: function() {
+                                    $common.$location.path(location).search('userId',null).search('clientId',null).search('articleId', null).search('salieId', null);
+                                    $scope.$apply();
+                                }
+                            }
+                        }
+                    });
                 }
             }
         }]).filter('numberFixedLen', function () {
@@ -48,5 +66,20 @@
                 }
             }
         }
-    });;
+    }).directive("digitalClock",function($timeout,dateFilter){
+        return function(scope,element,attrs) {
+
+            element.addClass('text-center');
+
+            scope.updateClock = function(){
+                $timeout(function(){
+                    element.text(dateFilter(new Date(), 'yyyy/MM/dd hh:mm:ss'));
+                    scope.updateClock();
+                },1000);
+            };
+
+            scope.updateClock();
+
+        };
+    });
 })(angular);

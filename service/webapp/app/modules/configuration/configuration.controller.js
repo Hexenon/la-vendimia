@@ -26,10 +26,10 @@
                     .then((result) => {
                         $scope.saving = false;
                         if (result.isValid) {
-                            $scope.result = 'Configuration successfully saved';
+                            $scope.result = 'Configuración guardada correctamente.';
                         } else {
                             if (result.error.code === 11000) {
-                                $scope.status = 'Configuration already registered';
+                                $scope.status = 'Configuración ya existente';
                             } else {
                                 $scope.status = result.error;
                             }
