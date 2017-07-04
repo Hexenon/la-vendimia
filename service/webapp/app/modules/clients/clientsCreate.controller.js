@@ -38,6 +38,7 @@
                         $scope.saving = false;
                         if (result.isValid) {
                             $scope.result = 'Bien Hecho. El cliente ha sido registrado correctamente';
+                            $scope.newClient = {};
                         } else {
                             if (result.error.code === 11000) {
                                 $scope.status = 'Cliente ya registrado';

@@ -15,6 +15,9 @@
 
             $scope.login = ()=>{
                 $scope.status = null;
+                if (!$scope.user.username || !$scope.user.password){
+                    return;
+                }
                 $dataService.login($scope.user, (response)=> {
                     if (response.isValid) {
                         let expireDate = new Date();

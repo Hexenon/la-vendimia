@@ -44,6 +44,7 @@
         };
 
         $dataService.on('remove-sales',(sale)=>{
+            console.log('REMOVED SALE', sale);
             let removed = $scope.sales.filter((o)=>{
                 return o._id === sale._id;
             });
@@ -185,7 +186,7 @@
         $dataService.find({
                 model:'sales',
                 query: {active: true},
-                populate: [{path:'articles',model:'articles'},{path:'client',model:'clients'}]
+                populate: [{path:'articles.article',model:'articles'},{path:'client',model:'clients'}]
             })
             .then((result)=>{
                 if (result.isValid){

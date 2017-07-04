@@ -164,6 +164,7 @@ let listControllers = (service)=>{
                     error: 'No data given.'
                 });
             }
+            console.log("saving",args.data);
             let newItem = new service.models.mongodb[args.model](args.data);
             newItem.save((err)=>{
                 if (err){
@@ -173,6 +174,7 @@ let listControllers = (service)=>{
                         isValid: false,
                         error: err
                     });
+
                 }else{
                     console.log("save success");
                     /* by convention structure for responses*/
@@ -321,7 +323,7 @@ let listControllers = (service)=>{
                                     returnItem.password = '****';
                                 }
 
-                                service.io.sockets.emit(`delete-${args.model}`, returnItem);
+                                service.io.sockets.emit(`remove-${args.model}`, returnItem);
                             }
                         })
                     }else{

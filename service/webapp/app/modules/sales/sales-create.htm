@@ -1,12 +1,28 @@
+<style>
+    @media print {
+        .div-print {
+            background-color: white;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+</style>
+
 <div class="container-fluid" ng-controller="salesCreateController">
-    <div class="row">
+    <div class="row" >
         <div class="col-xs-12">
             <div class="panel panel-default" style="visibility: visible;">
                 <div class="panel-heading">
                     <h2>{{editing ? 'Edición' : 'Registro'}} de Venta</h2>
                     <span style="margin: 0 5px;" class="pull-right"><button ng-click="startNewSale()" class="btn btn-sm btn-default"><i class="fa fa-file"></i>&nbsp;nuevo</button></span>
-                    <span style="margin: 0 5px;" class="pull-right"><button ng-click="printSale()" class="btn btn-sm btn-default"><i class="fa fa-print"></i>&nbsp;imprimir</button></span>
-                    <span class="pull-right"><span>Folio de Venta: <strong class="label label-primary">{{newSale.folio}}</strong></span></span>
+                    <span class="pull-right"><span>Folio de Venta: <strong class="label label-primary">{{newSale._id}}</strong></span></span>
                     <div class="panel-ctrls" data-actions-container="" data-action-collapse='{"target": ".panel-body"}'></div>
                 </div>
                 <div class="panel-editbox" data-widget-controls=""></div>
@@ -103,7 +119,7 @@
                             </div>
                         </div>
                         <div class="col-sm-8 col-sm-offset-2">
-                            <button type="submit" ng-disabled="!canSave()" ng-show="!saving" class="btn-primary btn pull-right" style="margin: 0 5px;">Save</button>
+                            <button type="submit" ng-disabled="!canSave()" ng-show="!saving && !blockCapture" class="btn-primary btn pull-right" style="margin: 0 5px;">Save</button>
                             <button type="button" ng-show="saving" class="btn-primary btn pull-right"><i class="fa fa-spinner fa-spin"></i></button>
                             <button type="button" ng-click="redirect('sales',null,true)" class="btn-default btn pull-right">Cancelar</button>
                         </div>
@@ -112,13 +128,11 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-xs-12" ng-if="status">
-                            <div class="alert alert-danger">
-                                {{status}}
+                            <div class="alert alert-danger" ng-bind="status">
                             </div>
                         </div>
                         <div class="col-xs-12" ng-if="result">
-                            <div class="alert alert-info">
-                                {{result}}
+                            <div class="alert alert-info"  ng-bind="result">
                             </div>
                         </div>
                     </div>

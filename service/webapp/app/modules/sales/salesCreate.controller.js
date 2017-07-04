@@ -6,7 +6,7 @@
 ((angular)=>{
     angular.module('sales').controller('salesCreateController',['$scope','$common', '$dataService',($scope, $common, $dataService)=>{
         $scope.newSale = {
-            folio: 'nuevo',
+            _id: '0000',
             hitch: 0,
             hitchBonification: 0,
             total: 0
@@ -75,16 +75,25 @@
         }
 
         function canSave(){
+            if ($scope.saving){
+                return false;
+            }
             let canSave = true;
+            let message =  'El artículo %s tiene una cantidad inválida, verifique porfavor.';
             $scope.articles.every((a)=>{
                 if (isNaN(a.quantity - a.stock)){
+                    canSave = false;
+                    message = message.replace('%s',a.description);
+                    return true;
+                }else if(a.quantity === 0){
+                    message = 'El artículo '+a.description+' no tiene cantidad. verifique porfavor.';
                     canSave = false;
                     return true;
                 }
                 return false;
             });
             if (!canSave){
-                $scope.status = 'Hay un artículo con una cantidad inválida, verifique porfavor.'
+                $scope.status = message;
             }
             if (!$scope.newSale.client ){
                 $scope.status = 'No ha seleccionado un cliente';
@@ -281,13 +290,20 @@
             if (!$scope.editing) {
                 $scope.newSale.articles = [];
                 $scope.articles.forEach((a)=>{
-                    $scope.newSale.articles.push(a._id);
+                    $scope.newSale.articles.push({
+                        article : a._id,
+                        quantity : a.quantity
+                    });
                 });
+                $scope.newSale._id = null;
                 $dataService.save('sales', $scope.newSale)
                     .then((result) => {
-                        $scope.saving = false;
+                        console.log("result",result);
                         if (result.isValid) {
-                            $scope.result = 'Sale successfully saved';
+                            $scope.saving = false;
+                            $scope.result = 'Bien hecho, la venta se ha registrado correctamente';
+                            $scope.newSale._id = result.item._id;
+                            $scope.blockCapture = true;
                         } else {
                             if (result.error.code === 11000) {
                                 $scope.status = 'Sale already registered';
@@ -328,10 +344,13 @@
                         label: "Si, comenzar de nuevo",
                         className: "btn-primary",
                         callback: function() {
+                            $scope.blockCapture = false;
+                            $scope.saving = false;
                             $scope.newSale = { folio: 'nuevo',hitch: 0,hitchBonification: 0,total: 0};
                             $scope.articles= [];
                             $scope.status = null;
                             $scope.result = null;
+                            $scope.clientSelector.select2("val", "");
                         }
                     }
                 }

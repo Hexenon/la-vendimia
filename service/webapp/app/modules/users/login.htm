@@ -11,7 +11,7 @@
 										<span class="input-group-addon">
 											<i class="ti ti-user"></i>
 										</span>
-                                    <input type="email" ng-model="user.username" class="form-control" placeholder="Email" data-parsley-minlength="6" placeholder="At least 6 characters" required>
+                                    <input type="email" enter-submit="login()" ng-model="user.username" class="form-control" placeholder="Email" data-parsley-minlength="6" placeholder="At least 6 characters" required>
                                 </div>
                             </div>
                         </div>
@@ -22,7 +22,7 @@
 										<span class="input-group-addon">
 											<i class="ti ti-key"></i>
 										</span>
-                                    <input type="password" ng-model="user.password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                                    <input type="password" enter-submit="login()" ng-model="user.password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
                                 </div>
                             </div>
                         </div>

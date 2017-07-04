@@ -13,7 +13,7 @@ module.exports = (connection, mongoose) => {
             index: true
         },
         articles: {
-            type: [mongoose.Schema.Types.ObjectId],
+            type: [{ article: mongoose.Schema.Types.ObjectId, quantity: Number } ],
             ref: 'articles',
             required: true,
             index: true
@@ -76,12 +76,47 @@ module.exports = (connection, mongoose) => {
 
 
 
-    let beforeUpdate = (next) => {
-        let _this = this;
-        _this.updatedAt = new Date();
-        next(_this);
-    };
+    function beforeUpdate(next){
+        let self = this;
+        self.updatedAt = new Date();
+        next(self);
+    }
 
+    function postSave(){
+        let self = this;
+        let articleModel = connection.model('articles');
+        self.articles.forEach((article)=>{
+             articleModel.findById(article.article,function(err, art){
+                 if (art){
+                     if (self.active) {
+                         art.stock -= article.quantity;
+                     }else{
+                         art.stock += article.quantity;
+                     }
+                     art.save((err)=>{
+
+                     })
+                 }
+             })
+        });
+    }
+
+
+    function postUpdate() {
+        let self = this;
+        if (self.active === false) {
+            let articleModel = connection.model('articles');
+            self.articles.forEach((article) => {
+                articleModel.findById(article.article, function (err, art) {
+                    if (art) {
+                        art.stock += article.quantity;
+                        art.save((err) => {
+                        })
+                    }
+                })
+            });
+        }
+    }
     saleSchema.pre('save', beforeUpdate);
 
     saleSchema.pre('findOneAndUpdate', beforeUpdate);
@@ -89,6 +124,14 @@ module.exports = (connection, mongoose) => {
     saleSchema.pre('findIdAndUpdate', beforeUpdate);
 
     saleSchema.pre('update', beforeUpdate);
+
+    saleSchema.post('save', postSave);
+
+    saleSchema.post('findOneAndUpdate', postUpdate);
+
+    saleSchema.post('findIdAndUpdate', postUpdate);
+
+    saleSchema.post('update', postUpdate);
 
 
 
