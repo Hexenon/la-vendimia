@@ -52,7 +52,7 @@
 
                                         </td>
                                         <td>{{a.maxPrice}}</td>
-                                        <td>{{a.maxPrice * a.quantity}}</td>
+                                        <td>{{!a.quantity ? 0 : a.maxPrice * a.quantity}}</td>
                                         <td><button type="button" ng-click="deleteArticle(a)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></button></td>
                                     </tr>
                                     </tbody>

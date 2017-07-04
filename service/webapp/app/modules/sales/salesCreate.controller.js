@@ -75,7 +75,30 @@
         }
 
         function canSave(){
-            return $scope.editing || $scope.newSale.client && $scope.articles.length > 0 && $scope.newSale.deadline > 0 ;
+            let canSave = true;
+            $scope.articles.every((a)=>{
+                if (isNaN(a.quantity - a.stock)){
+                    canSave = false;
+                    return true;
+                }
+                return false;
+            });
+            if (!canSave){
+                $scope.status = 'Hay un artículo con una cantidad inválida, verifique porfavor.'
+            }
+            if (!$scope.newSale.client ){
+                $scope.status = 'No ha seleccionado un cliente';
+            }
+            if (!$scope.newSale.deadline > 0){
+                $scope.status = 'No ha seleccionado un plazo de pago';
+            }
+            canSave = canSave && ($scope.editing || $scope.newSale.client && $scope.articles.length > 0 && $scope.newSale.deadline > 0 );
+
+            if (canSave){
+                $scope.status = null;
+            }
+
+            return canSave ;
         }
 
         function init(){
@@ -238,9 +261,11 @@
             $scope.newSale.hitch = 0;
             $scope.newSale.hitchBonification = 0;
             $scope.articles.forEach((article)=>{
-                $scope.newSale.hitch = article.hitch * article.quantity;
-                $scope.newSale.hitchBonification = article.hitchBonification * article.quantity;
-                $scope.newSale.total += (article.maxPrice * article.quantity) - $scope.newSale.hitch - $scope.newSale.hitchBonification;
+                if (article.quantity) {
+                    $scope.newSale.hitch = article.hitch * article.quantity;
+                    $scope.newSale.hitchBonification = article.hitchBonification * article.quantity;
+                    $scope.newSale.total += (article.maxPrice * article.quantity) - $scope.newSale.hitch - $scope.newSale.hitchBonification;
+                }
             });
             $scope.newSale.totalCash = 0;
             if ($scope.configuration) {
@@ -323,13 +348,13 @@
 
         function getDeadlineText(months){
             if (months === 0){
-                return $common.$sce.trustAsHtml(`<strong>PAGO DE CONTADO $ ${$scope.newSale.totalCash}</strong>`);
+                return $common.$sce.trustAsHtml(`<strong>PAGO DE CONTADO $ ${isNaN($scope.newSale.totalCash) ? 0: $scope.newSale.totalCash}</strong>`);
             }
             let totalSale = $scope.newSale.totalCash * (1 + ($scope.configuration.financingRate * months) / 100);
 
-            let firstPart = `&nbsp;&nbsp;&nbsp;<strong>${months}</strong> ABONOS DE <strong>$ ${(totalSale/months).toFixed(2)}</strong>`;
-            let secondPart = `&nbsp;&nbsp;&nbsp;TOTAL A PAGAR DE <strong>$ ${totalSale.toFixed(2)}</strong>`;
-            let thirdPart = `&nbsp;&nbsp;&nbsp;SE AHORRA <strong>$ ${($scope.newSale.total - totalSale).toFixed(2)}</strong>`;
+            let firstPart = `&nbsp;&nbsp;&nbsp;<strong>${months}</strong> ABONOS DE <strong>$ ${(isNaN(totalSale/months) ? 0 : totalSale/months).toFixed(2)}</strong>`;
+            let secondPart = `&nbsp;&nbsp;&nbsp;TOTAL A PAGAR DE <strong>$ ${(isNaN(totalSale) ? 0 : totalSale).toFixed(2)}</strong>`;
+            let thirdPart = `&nbsp;&nbsp;&nbsp;SE AHORRA <strong>$ ${(isNaN(($scope.newSale.total - totalSale)) ? 0 : ($scope.newSale.total - totalSale)).toFixed(2)}</strong>`;
 
 
             return $common.$sce.trustAsHtml(`${firstPart} ${secondPart} ${thirdPart}`);
